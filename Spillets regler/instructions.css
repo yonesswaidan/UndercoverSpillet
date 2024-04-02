@@ -1,0 +1,79 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Global styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+}
+
+header, footer {
+    text-align: center;
+    padding: 20px 0;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 200px);
+}
+
+.image-sidebar {
+    width: 200px;
+    margin-right: 20px;
+}
+
+.image-sidebar img {
+    width: 100%;
+    border-radius: 5px;
+}
+
+.content {
+    flex-grow: 1;
+    text-align: center; /* Centrerer indholdet */
+}
+
+.rules {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.rules h2 {
+    margin-bottom: 10px;
+}
+
+.rules ol {
+    list-style: none;
+    padding: 0;
+}
+
+.rules ol li {
+    margin-bottom: 10px;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff; /* Farve til knappen */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.back-button:hover {
+    background-color: #0056b3; /* Farveændring ved hover */
+}

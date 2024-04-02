@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gæt ordet</title>
+    <link rel="stylesheet" href="guess.css">
+</head>
+<body>
+    <div class="container">
+        <div class="right-panel">
+            <h1>Gæt det ord du tror det er!</h1>
+            <div id="word-container">
+                <p id="word-placeholder"></p>
+            </div>
+            <div id="other-players-cards"></div> <!-- Container til at vise de andre spilleres kort -->
+            <input type="text" id="guess-input" placeholder="Skriv ordet her">
+            <button id="submit-guess">Godkend ordet!</button>
+            <p id="result"></p>
+        </div>
+    </div>
+    <script src="guess.js"></script>
+</body>
+</html>

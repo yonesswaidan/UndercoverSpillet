@@ -1,0 +1,52 @@
+/* shuffle.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+}
+
+.card-selection {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.card {
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #fff; /* Baggrundsfarve */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: #333; /* Tekstfarve */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Skyggeeffekt */
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Overgangseffekter */
+}
+
+.card:hover {
+    background-color: #f5f5f5; /* Ændrer baggrundsfarven, når der holdes over */
+    transform: translateY(-5px); /* Løft kortet lidt, når det bliver hovret over */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Øget skyggeeffekt */
+}
+
+.card:nth-child(odd) {
+    background-color: #ffc107; /* Gule kort */
+}
+
+.card:nth-child(even) {
+    background-color: #2196f3; /* Blå kort */
+    color: #fff; /* Hvid tekstfarve for at kontrastere */
+}
+
+.card:hover:nth-child(odd) {
+    background-color: #ffd54f; /* Ændrer baggrundsfarven, når der holdes over for gule kort */
+}
+
+.card:hover:nth-child(even) {
+    background-color: #64b5f6; /* Ændrer baggrundsfarven, når der holdes over for blå kort */
+}
