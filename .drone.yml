@@ -1,0 +1,64 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  - name: clone
+    image: alpine/git
+    commands:
+      - git clone https://github.com/yonesswaidan/UndercoverSpillet.git
+      - cd UndercoverSpillet
+
+  - name: install_dependencies
+    image: node:14
+    commands:
+      - cd backend && npm install
+      - cd ../frontend && npm install
+
+  - name: static_code_analysis
+    image: node:14
+    commands:
+      - cd backend && npm run lint
+      - cd ../frontend && npm run lint
+
+  - name: run_tests_backend
+    image: node:14
+    commands:
+      - cd backend && npm test
+
+  - name: run_tests_frontend
+    image: node:14
+    commands:
+      - cd frontend && npm test
+
+  - name: build_backend
+    image: node:14
+    commands:
+      - cd backend && npm run build
+
+  - name: build_frontend
+    image: node:14
+    commands:
+      - cd frontend && npm run build
+
+  - name: deploy
+    image: appleboy/drone-ssh
+    settings:
+      host: your-staging-server.com
+      username: your-username
+      password: your-password
+      script:
+        - cd /path/to/deployment
+        - docker-compose down
+        - git pull origin main
+        - docker-compose up -d
+
+  - name: notifications
+    image: plugins/slack
+    settings:
+      webhook: https://hooks.slack.com/services/your/webhook/url
+      channel: devops
+      username: drone
+      icon_emoji: ":drone:"
+      message: >
+        Build [${DRONE_BUILD_NUMBER}](${DRONE_BUILD_LINK}) of `${DRONE_REPO}` has finished with status: ${DRONE_BUILD_STATUS}.
