@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "lint": "eslint .",
-    "test:unit": "mocha 'test/unit/**/*.test.cjs'",
-    "test:integration": "mocha 'test/integration/**/*.test.cjs'",
+    "test:unit": "mocha 'test/unit/.test.cjs'",
+    "test:integration": "mocha 'test/integration/.test.cjs'",
     "build": "echo 'build script here'"
   },
   "keywords": [],
