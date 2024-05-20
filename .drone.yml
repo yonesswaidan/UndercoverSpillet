@@ -3,62 +3,88 @@ type: docker
 name: default
 
 steps:
-  - name: clone
-    image: alpine/git
-    commands:
-      - git clone https://github.com/yonesswaidan/UndercoverSpillet.git
-      - cd UndercoverSpillet
-
   - name: install_dependencies
-    image: node:14
+    image: node:16
     commands:
-      - cd backend && npm install
-      - cd ../frontend && npm install
+      - npm install
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
 
-  - name: static_code_analysis
-    image: node:14
+  - name: lint
+    image: node:16
     commands:
-      - cd backend && npm run lint
-      - cd ../frontend && npm run lint
+      - npm run lint -- --max-warnings 10
+    timeout: 5m
+    resources:
+      limits:
+        memory: 1GiB
+        cpu: 1
 
-  - name: run_tests_backend
-    image: node:14
+  - name: test_unit
+    image: node:16
     commands:
-      - cd backend && npm test
+      - npm run test:unit
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
 
-  - name: run_tests_frontend
-    image: node:14
+  - name: test_integration
+    image: node:16
     commands:
-      - cd frontend && npm test
+      - npm run test:integration
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
 
-  - name: build_backend
-    image: node:14
+  - name: build
+    image: node:16
     commands:
-      - cd backend && npm run build
+      - npm run build
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
 
-  - name: build_frontend
-    image: node:14
-    commands:
-      - cd frontend && npm run build
+  - name: docker_build
+    image: plugins/docker
+    settings:
+      repo: your-docker-repo/navnegruppenreactwebsite
+      tags: latest
 
-  - name: deploy
+  - name: deploy_test
     image: appleboy/drone-ssh
     settings:
-      host: your-staging-server.com
-      username: your-username
-      password: your-password
+      host: your_test_server
+      username: your_username
+      password: your_password
       script:
-        - cd /path/to/deployment
-        - docker-compose down
-        - git pull origin main
-        - docker-compose up -d
+        - docker pull your-docker-repo/navnegruppenreactwebsite:latest
+        - docker stop navnegruppen_test || true
+        - docker rm navnegruppen_test || true
+        - docker run -d --name navnegruppen_test -p 5173:5173 your-docker-repo/navnegruppenreactwebsite:latest
 
-  - name: notifications
-    image: plugins/slack
+  - name: deploy_prod
+    image: appleboy/drone-ssh
     settings:
-      webhook: https://hooks.slack.com/services/your/webhook/url
-      channel: devops
-      username: drone
-      icon_emoji: ":drone:"
-      message: >
-        Build [${DRONE_BUILD_NUMBER}](${DRONE_BUILD_LINK}) of `${DRONE_REPO}` has finished with status: ${DRONE_BUILD_STATUS}.
+      host: your_prod_server
+      username: your_username
+      password: your_password
+      script:
+        - docker pull your-docker-repo/navnegruppenreactwebsite:latest
+        - docker stop navnegruppen_prod || true
+        - docker rm navnegruppen_prod || true
+        - docker run -d --name navnegruppen_prod -p 5173:5173 your-docker-repo/navnegruppenreactwebsite:latest
+
+services:
+  - name: navnegruppen-mongodb
+    image: mongo
+    environment:
+      MONGO_INITDB_DATABASE: NewbornNamesDB
