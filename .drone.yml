@@ -5,10 +5,10 @@ name: default
 steps:
   - name: install_dependencies
     image: node:16
-    environment:
-      DRONE_DEBUG: true
     commands:
       - npm install
+    environment:
+      DRONE_DEBUG: true
     timeout: 10m
     resources:
       limits:
@@ -17,10 +17,10 @@ steps:
 
   - name: lint
     image: node:16
-    environment:
-      DRONE_DEBUG: true
     commands:
       - npm run lint -- --max-warnings 10
+    environment:
+      DRONE_DEBUG: true
     timeout: 5m
     resources:
       limits:
@@ -29,10 +29,10 @@ steps:
 
   - name: test_unit
     image: node:16
-    environment:
-      DRONE_DEBUG: true
     commands:
       - npm run test:unit
+    environment:
+      DRONE_DEBUG: true
     timeout: 10m
     resources:
       limits:
@@ -41,10 +41,10 @@ steps:
 
   - name: test_integration
     image: node:16
-    environment:
-      DRONE_DEBUG: true
     commands:
       - npm run test:integration
+    environment:
+      DRONE_DEBUG: true
     timeout: 10m
     resources:
       limits:
@@ -53,10 +53,10 @@ steps:
 
   - name: build
     image: node:16
-    environment:
-      DRONE_DEBUG: true
     commands:
       - npm run build
+    environment:
+      DRONE_DEBUG: true
     timeout: 10m
     resources:
       limits:
@@ -66,7 +66,7 @@ steps:
   - name: docker_build
     image: plugins/docker
     settings:
-      repo: your-docker-repo/navnegruppenreactwebsite
+      repo: your-docker-repo/undercovergame
       tags: latest
 
   - name: deploy_test
@@ -76,10 +76,10 @@ steps:
       username: your_username
       password: your_password
       script:
-        - docker pull your-docker-repo/navnegruppenreactwebsite:latest
-        - docker stop navnegruppen_test || true
-        - docker rm navnegruppen_test || true
-        - docker run -d --name navnegruppen_test -p 5173:5173 your-docker-repo/navnegruppenreactwebsite:latest
+        - docker pull your-docker-repo/undercovergame:latest
+        - docker stop undercovergame_test || true
+        - docker rm undercovergame_test || true
+        - docker run -d --name undercovergame_test -p 3000:3000 your-docker-repo/undercovergame:latest
 
   - name: deploy_prod
     image: appleboy/drone-ssh
@@ -88,14 +88,13 @@ steps:
       username: your_username
       password: your_password
       script:
-        - docker pull your-docker-repo/navnegruppenreactwebsite:latest
-        - docker stop navnegruppen_prod || true
-        - docker rm navnegruppen_prod || true
-        - docker run -d --name navnegruppen_prod -p 5173:5173 your-docker-repo/navnegruppenreactwebsite:latest
+        - docker pull your-docker-repo/undercovergame:latest
+        - docker stop undercovergame_prod || true
+        - docker rm undercovergame_prod || true
+        - docker run -d --name undercovergame_prod -p 3000:3000 your-docker-repo/undercovergame:latest
 
 services:
-  - name: navnegruppen-mongodb
+  - name: mongodb
     image: mongo
     environment:
-      MONGO_INITDB_DATABASE: NewbornNamesDB
-
+      MONGO_INITDB_DATABASE: game-database
