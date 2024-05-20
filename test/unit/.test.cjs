@@ -1,13 +1,12 @@
-const { expect } = require('chai');
+const assert = require('assert');
 
-describe('En simpel enhedstest', () => {
-  it('Skal returnere sandt, hvis værdien er sand', () => {
-    const result = true;
-    expect(result).to.be.true;
-  });
+// En simpel enhedstest
+it('Skal returnere sandt, hvis værdien er sand', () => {
+  const result = true;
+  assert.strictEqual(result, true);
+});
 
-  it('Skal returnere falsk, hvis værdien er falsk', () => {
-    const result = false;
-    expect(result).to.be.false;
-  });
+it('Skal returnere falsk, hvis værdien er falsk', () => {
+  const result = false;
+  assert.strictEqual(result, false);
 });
