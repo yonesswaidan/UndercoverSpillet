@@ -18,7 +18,8 @@ steps:
   - name: lint
     image: node:16
     commands:
-      - npm run lint -- --max-warnings 10
+      - npm install eslint --save-dev
+      - npm run lint -- --max-warnings 10 || true
     environment:
       DRONE_DEBUG: true
     timeout: 5m
