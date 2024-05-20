@@ -1,12 +1,12 @@
 const assert = require('assert');
 
 // En simpel enhedstest
-it('Skal returnere sandt, hvis værdien er sand', () => {
-  const result = true;
-  assert.strictEqual(result, true);
-});
+console.log('Kører en simpel enhedstest...');
 
-it('Skal returnere falsk, hvis værdien er falsk', () => {
-  const result = false;
-  assert.strictEqual(result, false);
-});
+const result1 = true;
+assert.strictEqual(result1, true);
+
+const result2 = false;
+assert.strictEqual(result2, false);
+
+console.log('Enhedstesten blev kørt succesfuldt.');
