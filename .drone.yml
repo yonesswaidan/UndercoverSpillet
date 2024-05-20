@@ -28,11 +28,6 @@ steps:
         memory: 1GiB
         cpu: 1
 
-  - name: install_mocha
-    image: node:16
-    commands:
-      - npm install mocha --save-dev
-
   - name: make_tests_executable
     image: node:16
     commands:
