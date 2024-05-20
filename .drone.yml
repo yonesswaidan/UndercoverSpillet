@@ -5,6 +5,8 @@ name: default
 steps:
   - name: install_dependencies
     image: node:16
+    environment:
+      DRONE_DEBUG: true
     commands:
       - npm install
     timeout: 10m
@@ -15,6 +17,8 @@ steps:
 
   - name: lint
     image: node:16
+    environment:
+      DRONE_DEBUG: true
     commands:
       - npm run lint -- --max-warnings 10
     timeout: 5m
@@ -25,6 +29,8 @@ steps:
 
   - name: test_unit
     image: node:16
+    environment:
+      DRONE_DEBUG: true
     commands:
       - npm run test:unit
     timeout: 10m
@@ -35,6 +41,8 @@ steps:
 
   - name: test_integration
     image: node:16
+    environment:
+      DRONE_DEBUG: true
     commands:
       - npm run test:integration
     timeout: 10m
@@ -45,6 +53,8 @@ steps:
 
   - name: build
     image: node:16
+    environment:
+      DRONE_DEBUG: true
     commands:
       - npm run build
     timeout: 10m
@@ -88,3 +98,4 @@ services:
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: NewbornNamesDB
+
