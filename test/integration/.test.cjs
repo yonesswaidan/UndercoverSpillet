@@ -1,5 +1,5 @@
 const request = require('chai-http');
-const app = require('../app'); // Her skal du tilpasse stien til din appfil
+const app = require('../app'); // Du skal tilpasse stien til din appfil
 
 describe('En simpel integrationstest', () => {
   it('Skal returnere status 200 ved at tilgå startsiden', (done) => {
