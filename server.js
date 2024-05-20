@@ -26,8 +26,8 @@ const User = mongoose.model('User', userSchema);
 // Middleware for at parse JSON-anmodninger
 app.use(bodyParser.json());
 
-// Servér statiske filer fra en undermappe (f.eks. 'public')
-app.use(express.static(path.join(__dirname, ''))); // Ændret fra 'public' til rodmappe
+// Servér statiske filer fra rodmappen
+app.use(express.static(path.join(__dirname, '')));
 
 // POST-endpunkt til at gemme brugeroplysninger
 app.post('/api/users', async (req, res) => {
