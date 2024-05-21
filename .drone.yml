@@ -75,9 +75,9 @@ steps:
       repo: yonesswaidan/undercovergame
       tags: latest
       username:
-        from_secret: yonesswaidan
+        from_secret: docker_username
       password:
-        from_secret: Swaidan1234
+        from_secret: docker_password
 
   - name: deploy_test
     image: appleboy/drone-ssh
