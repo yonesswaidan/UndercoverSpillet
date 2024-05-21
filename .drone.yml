@@ -79,47 +79,15 @@ steps:
       password:
         from_secret: docker_password
 
-  - name: deploy_test
+  - name: deploy_to_hub
     image: plugins/docker
     settings:
-      repo: yonesswaidan/undercovergame:test
+      repo: yonesswaidan/undercovergame
       tags: latest
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
-
-  - name: deploy_prod
-    image: plugins/docker
-    settings:
-      repo: yonesswaidan/undercovergame:prod
-      tags: latest
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-
-  - name: watchtower_test
-    image: containrrr/watchtower
-    settings:
-      repo: yonesswaidan/undercovergame:test
-      tags: latest
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      run_once: true
-
-  - name: watchtower_prod
-    image: containrrr/watchtower
-    settings:
-      repo: yonesswaidan/undercovergame:prod
-      tags: latest
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      run_once: true
 
 services:
   - name: mongodb
