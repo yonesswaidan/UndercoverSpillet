@@ -72,7 +72,7 @@ steps:
   - name: docker_build
     image: plugins/docker
     settings:
-      repo: your-docker-repo/undercovergame
+      repo: yonesswaidan/undercovergame
       tags: latest
 
   - name: deploy_test
@@ -82,10 +82,10 @@ steps:
       username: your_username
       password: your_password
       script:
-        - docker pull your-docker-repo/undercovergame:latest
+        - docker pull yonesswaidan/undercovergame:latest
         - docker stop undercovergame_test || true
         - docker rm undercovergame_test || true
-        - docker run -d --name undercovergame_test -p 3000:3000 your-docker-repo/undercovergame:latest
+        - docker run -d --name undercovergame_test -p 3000:3000 yonesswaidan/undercovergame:latest
 
   - name: deploy_prod
     image: appleboy/drone-ssh
@@ -94,10 +94,10 @@ steps:
       username: your_username
       password: your_password
       script:
-        - docker pull your-docker-repo/undercovergame:latest
+        - docker pull yonesswaidan/undercovergame:latest
         - docker stop undercovergame_prod || true
         - docker rm undercovergame_prod || true
-        - docker run -d --name undercovergame_prod -p 3000:3000 your-docker-repo/undercovergame:latest
+        - docker run -d --name undercovergame_prod -p 3000:3000 yonesswaidan/undercovergame:latest
 
 services:
   - name: mongodb
