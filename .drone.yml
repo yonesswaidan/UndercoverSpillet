@@ -79,31 +79,15 @@ steps:
       password:
         from_secret: docker_password
 
-  - name: deploy_test
-    image: appleboy/drone-ssh
+  - name: deploy_to_hub
+    image: plugins/docker
     settings:
-      host: your_test_server_ip_or_hostname
-      username: your_username
-      ssh_key:
-        from_secret: ssh_private_key
-      script:
-        - docker pull yonesswaidan/undercovergame:latest
-        - docker stop undercovergame_test || true
-        - docker rm undercovergame_test || true
-        - docker run -d --name undercovergame_test -p 3000:3000 yonesswaidan/undercovergame:latest
-
-  - name: deploy_prod
-    image: appleboy/drone-ssh
-    settings:
-      host: your_prod_server_ip_or_hostname
-      username: your_username
-      ssh_key:
-        from_secret: ssh_private_key
-      script:
-        - docker pull yonesswaidan/undercovergame:latest
-        - docker stop undercovergame_prod || true
-        - docker rm undercovergame_prod || true
-        - docker run -d --name undercovergame_prod -p 3000:3000 yonesswaidan/undercovergame:latest
+      repo: yonesswaidan/undercovergame
+      tags: latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
 
 services:
   - name: mongodb
