@@ -35,7 +35,7 @@ app.post('/api/users', async (req, res) => {
     const { playerName } = req.body;
     const newUser = new User({ playerName });
     await newUser.save();
-    console.log('POST request received:', playerName); // Legg til denne linjen for å logge mottatte anmodninger
+    console.log('POST request received:', playerName); 
     res.status(201).json({ message: 'Bruger oprettet', user: newUser });
   } catch (error) {
     res.status(500).json({ message: 'Der opstod en fejl', error: error.message });
