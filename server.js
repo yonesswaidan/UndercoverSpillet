@@ -26,7 +26,7 @@ const User = mongoose.model('User', userSchema);
 // Middleware for at parse JSON-anmodninger
 app.use(bodyParser.json());
 
-// Servér statiske filer fra rodmappen
+// Servér statiske filer fra 'spillet' mappen
 app.use(express.static(path.join(__dirname, 'spillet')));
 
 // POST-endpunkt til at gemme brugeroplysninger

@@ -10,9 +10,6 @@ COPY package*.json ./
 # Installer app afhængigheder
 RUN npm install
 
-# Hvis du bygger til produktion, brug:
-# RUN npm ci --only=production
-
 # Bundt app-kildekoden
 COPY . .
 
