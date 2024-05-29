@@ -20,4 +20,4 @@ COPY . .
 EXPOSE 3000
 
 # Definer kommandoen til at køre appen
-CMD [ "npm", "start" ]
+CMD ["npm", "start"]
