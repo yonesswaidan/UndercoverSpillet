@@ -27,7 +27,7 @@ const User = mongoose.model('User', userSchema);
 app.use(bodyParser.json());
 
 // Servér statiske filer fra rodmappen
-app.use(express.static(path.join(__dirname, 'spillet')));
+app.use(express.static(path.join(__dirname, '')));
 
 // POST-endpunkt til at gemme brugeroplysninger
 app.post('/api/users', async (req, res) => {
@@ -44,7 +44,7 @@ app.post('/api/users', async (req, res) => {
 
 // Servér index.html, når roden af webstedet besøges
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'spillet', 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Start serveren
