@@ -3,17 +3,15 @@ type: docker
 name: default
 
 steps:
-  - name: statisk-kode-analyse-backend
-    image: mcr.microsoft.com/dotnet/sdk:8.0
-    environment:
-      SONAR_TOKEN:
-        from_secret: sonar_token
-    commands:
-      - dotnet tool install --global dotnet-sonarscanner
-      - export PATH="$PATH:/root/.dotnet/tools"
-      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.login="${SONAR_TOKEN}"
+    - name: code-analysis
+      image: boulundeasv/dotnet-sdk-with-java
+      environment:
+        SONARSECRET:
+          from_secret: SonarQubeSecret
+      commands:
+      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="sqp_7eb3fb8af26abd23ab80315bf1a832530d424a2d"
       - dotnet build
-      - dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
+      - dotnet sonarscanner end /d:sonar.token="sqp_7eb3fb8af26abd23ab80315bf1a832530d424a2d"
 
   - name: installer_afhængigheder
     image: node:16
