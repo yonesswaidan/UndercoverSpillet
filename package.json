@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "lint": "eslint .",
-    "test:unit": "mocha test/unit/.test.cjs",
-    "test:integration": "mocha test/integration/.test.cjs",
+    "test:unit": "node test/unit/.test.cjs",
+    "test:integration": "node test/integration/.test.cjs",
     "test:database": "mocha test/database/.test.cjs",
     "build": "echo 'build script here'"
   },
@@ -27,3 +27,4 @@
     "mocha": "^9.2.2"
   }
 }
+
