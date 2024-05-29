@@ -33,6 +33,7 @@ steps:
     commands:
       - chmod +x test/unit/.test.cjs
       - chmod +x test/database/.test.cjs
+      - chmod +x node_modules/.bin/mocha  # Give mocha the necessary permissions
 
   - name: start_server_and_test_integration
     image: node:16
