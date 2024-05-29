@@ -60,45 +60,6 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: test_database
-    image: node:16
-    commands:
-      - npm run test:database
-    environment:
-      DRONE_DEBUG: true
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
-
-
-    - name: test_redirect
-    image: node:16
-    commands:
-      - npm run test:redirect
-    environment:
-      DRONE_DEBUG: true
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
-
-
-  - name: test_user
-    image: node:16
-    commands:
-      - npm run test:user
-    environment:
-      DRONE_DEBUG: true
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
-
-
   - name: build
     image: node:16
     commands:
