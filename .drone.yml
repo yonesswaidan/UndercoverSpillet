@@ -32,13 +32,15 @@ steps:
     image: node:16
     commands:
       - chmod +x test/unit/.test.cjs
-
+      - chmod +x test/database/.test.cjs
+      - chmod +x test/user/.test.cjs
+      - chmod +x test/redirect/.test.cjs
 
   - name: start_server_and_test_integration
     image: node:16
     commands:
       - node server.js &  # Start serveren i baggrunden
-      - sleep 20  # Vent 10 sekunder for at sikre, at appen starter
+      - sleep 10  # Vent 10 sekunder for at sikre, at appen starter
       - npm run test:integration  # Kør integrationstesten
     environment:
       DRONE_DEBUG: true
@@ -52,6 +54,42 @@ steps:
     image: node:16
     commands:
       - npm run test:unit
+    environment:
+      DRONE_DEBUG: true
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
+
+  - name: test_database
+    image: node:16
+    commands:
+      - npm run test:database
+    environment:
+      DRONE_DEBUG: true
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
+
+  - name: test_redirect
+    image: node:16
+    commands:
+      - npm run test:redirect
+    environment:
+      DRONE_DEBUG: true
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
+
+  - name: test_user
+    image: node:16
+    commands:
+      - npm run test:user
     environment:
       DRONE_DEBUG: true
     timeout: 10m
