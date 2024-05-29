@@ -33,12 +33,6 @@ steps:
     commands:
       - chmod +x test/unit/.test.cjs
 
-  - name: build_docker_image
-    image: plugins/docker
-    settings:
-      repo: local/undercovergame
-      tags: latest
-
   - name: start_server_and_test_integration
     image: node:16
     commands:
