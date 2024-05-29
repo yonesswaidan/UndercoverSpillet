@@ -33,6 +33,12 @@ steps:
     commands:
       - chmod +x test/unit/.test.cjs
 
+  - name: start_server
+    image: node:16
+    commands:
+      - node server.js &
+      - sleep 10  # Vent 10 sekunder for at sikre, at appen starter
+
   - name: test_unit
     image: node:16
     commands:
@@ -44,12 +50,6 @@ steps:
       limits:
         memory: 2GiB
         cpu: 2
-
-  - name: start_app
-    image: node:16
-    commands:
-      - npm start &
-      - sleep 10  # Vent 10 sekunder for at sikre, at appen starter
 
   - name: test_integration
     image: node:16
