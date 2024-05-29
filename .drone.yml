@@ -9,11 +9,11 @@ steps:
       SONAR_TOKEN:
         from_secret: sonar_token
     commands:
-    - dotnet tool install --global dotnet-sonarscanner
-    - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="sqp_7eb3fb8af26abd23ab80315bf1a832530d424a2d"
-    - dotnet build
-    - dotnet sonarscanner end /d:sonar.token="sqp_7eb3fb8af26abd23ab80315bf1a832530d424a2d"
-    
+      - dotnet tool install --global dotnet-sonarscanner
+      - export PATH="$PATH:/root/.dotnet/tools"
+      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.token="${SONAR_TOKEN}"
+      - dotnet build
+      - dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
 
   - name: install_dependencies
     image: node:16
@@ -95,6 +95,7 @@ steps:
       SONAR_TOKEN: ${SONAR_TOKEN}
       PATH: /root/.dotnet/tools:$PATH
     commands:
+      - export PATH="$PATH:/root/.dotnet/tools"
       - dotnet-sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
 
   - name: docker_build
@@ -116,4 +117,4 @@ services:
 secrets:
   - name: docker_username
   - name: docker_password
-  - name: SONAR_TOKEN
+  - name: sonar_token
