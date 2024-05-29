@@ -6,7 +6,7 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Forbindelse til MongoDB Atla
+// Forbindelse til MongoDB Atlas
 mongoose.connect('mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Connected to MongoDB Atlas'))
   .catch(error => console.error('Connection error:', error));
