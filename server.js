@@ -44,8 +44,9 @@ app.post('/api/users', async (req, res) => {
 
 // Servér index.html, når roden af webstedet besøges
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'spillet', 'index.html'));
 });
+
 
 // Start serveren
 app.listen(port, () => {
