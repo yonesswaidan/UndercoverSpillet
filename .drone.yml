@@ -7,14 +7,15 @@ steps:
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     commands:
       - dotnet tool install --global dotnet-sonarscanner
-      - export PATH="$PATH:/root/.dotnet/tools"
+    environment:
+      PATH: /root/.dotnet/tools:$PATH
 
   - name: sonar_begin
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     environment:
       SONAR_TOKEN: ${SONAR_TOKEN}
+      PATH: /root/.dotnet/tools:$PATH
     commands:
-      - export PATH="$PATH:/root/.dotnet/tools"
       - dotnet-sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.token="${SONAR_TOKEN}"
 
   - name: install_dependencies
@@ -95,8 +96,8 @@ steps:
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     environment:
       SONAR_TOKEN: ${SONAR_TOKEN}
+      PATH: /root/.dotnet/tools:$PATH
     commands:
-      - export PATH="$PATH:/root/.dotnet/tools"
       - dotnet-sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
 
   - name: docker_build
