@@ -3,7 +3,7 @@ type: docker
 name: default
 
 steps:
-  - name: static-code-analysis-backend
+  - name: statisk-kode-analyse-backend
     image: mcr.microsoft.com/dotnet/sdk:8.0
     environment:
       SONAR_TOKEN:
@@ -15,7 +15,7 @@ steps:
       - dotnet build
       - dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
 
-  - name: install_dependencies
+  - name: installer_afhængigheder
     image: node:16
     commands:
       - npm install
@@ -40,16 +40,16 @@ steps:
         memory: 1GiB
         cpu: 1
 
-  - name: make_tests_executable
+  - name: gør_tests_eksekverbare
     image: node:16
     commands:
       - chmod +x test/unit/.test.cjs
       - chmod +x test/integration/.test.cjs
 
-  - name: start_server_and_test_integration
+  - name: start_server_og_test_integration
     image: node:16
     commands:
-      - node server.js &  # Start server i baggrunden
+      - node server.js &  # Start serveren i baggrunden
       - sleep 5  # Vent 5 sekunder for at sikre, at appen starter
       - npm run test:integration  # Kør integrationstest
     environment:
@@ -72,7 +72,7 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: build
+  - name: byg
     image: node:16
     commands:
       - npm run build
@@ -84,12 +84,12 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: build_dotnet
+  - name: byg_dotnet
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     commands:
       - dotnet build
 
-  - name: sonar_end
+  - name: sonar_slut
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     environment:
       SONAR_TOKEN: ${SONAR_TOKEN}
@@ -98,7 +98,7 @@ steps:
       - export PATH="$PATH:/root/.dotnet/tools"
       - dotnet-sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
 
-  - name: docker_build
+  - name: docker_byg
     image: plugins/docker
     settings:
       repo: yonesswaidan/undercovergame
