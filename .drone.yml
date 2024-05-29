@@ -34,7 +34,6 @@ steps:
       - chmod +x test/unit/.test.cjs
       - chmod +x test/integration/.test.cjs
 
-
   - name: start_server_and_test_integration
     image: node:16
     commands:
@@ -61,7 +60,6 @@ steps:
         memory: 2GiB
         cpu: 2
 
-
   - name: build
     image: node:16
     commands:
@@ -84,10 +82,21 @@ steps:
       password:
         from_secret: docker_password
 
-  - name: deploy_to_hub
-    image: plugins/docker
+  - name: deploy_to_test
+    image: containrrr/watchtower
     settings:
-      repo: yonesswaidan/undercovergame
+      repo: yonesswaidan/undercovergame:test
+      tags: latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      test: true
+
+  - name: deploy_to_production
+    image: containrrr/watchtower
+    settings:
+      repo: yonesswaidan/undercovergame:latest
       tags: latest
       username:
         from_secret: docker_username
