@@ -87,10 +87,3 @@ services:
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: game-database
-
-  - name: watchtower
-    image: containrrr/watchtower
-    privileged: true
-    environment:
-      WATCHTOWER_CLEANUP: "true"
-      WATCHTOWER_NO_PULL: "true"
