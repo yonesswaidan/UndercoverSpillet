@@ -1,7 +1,7 @@
 # Brug en officiel Node.js runtime som et basisbillede
 FROM node:16
 
-# Opret en app mappe
+# Opret en app mapp
 WORKDIR /usr/src/app
 
 # Kopier package.json og package-lock.json (hvis tilgængelig)
