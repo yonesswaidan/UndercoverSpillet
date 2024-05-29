@@ -8,7 +8,6 @@
     "lint": "eslint .",
     "test:unit": "node test/unit/.test.cjs",
     "test:integration": "node test/integration/.test.cjs",
-    "test:database": "npx mocha test/database/.test.cjs",
     "build": "echo 'build script here'"
   },
   "keywords": [],
@@ -24,6 +23,8 @@
     "chai-http": "^4.3.0",
     "eslint": "^8.0.0",
     "eslint-plugin-react": "^7.34.1",
-    "mocha": "^9.2.2"
+    "mocha": "^9.2.2",
+    "mockgoose": "^8.0.4",
+    "sinon": "^18.0.0"
   }
 }

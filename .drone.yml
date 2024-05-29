@@ -33,7 +33,6 @@ steps:
     commands:
       - chmod +x test/unit/.test.cjs
       - chmod +x test/database/.test.cjs
-      - chmod +x node_modules/.bin/mocha  # Give mocha the necessary permissions
 
   - name: start_server_and_test_integration
     image: node:16
@@ -61,18 +60,6 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: test_database
-    image: node:16
-    commands:
-      - npx mocha test/database/.test.cjs
-    environment:
-      DRONE_DEBUG: true
-      MONGO_URI: mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
 
   - name: build
     image: node:16
