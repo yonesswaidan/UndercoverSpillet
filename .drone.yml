@@ -80,9 +80,9 @@ steps:
   - name: sonar_begin
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     environment:
-      SONAR_TOKEN: from_secret: sonar_token
+      SONAR_TOKEN: ${SONAR_TOKEN}
     commands:
-      - /root/.dotnet/tools/dotnet-sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="${SONAR_TOKEN}"
+      - /root/.dotnet/tools/dotnet-sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.token="${SONAR_TOKEN}"
 
   - name: build_dotnet
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
@@ -92,7 +92,7 @@ steps:
   - name: sonar_end
     image: mcr.microsoft.com/dotnet/core/sdk:3.1
     environment:
-      SONAR_TOKEN: from_secret: sonar_token
+      SONAR_TOKEN: ${SONAR_TOKEN}
     commands:
       - /root/.dotnet/tools/dotnet-sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
 
@@ -115,4 +115,4 @@ services:
 secrets:
   - name: docker_username
   - name: docker_password
-  - name: sonar_token
+  - name: SONAR_TOKEN
