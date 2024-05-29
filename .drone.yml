@@ -38,6 +38,10 @@ steps:
     settings:
       repo: local/undercovergame
       tags: latest
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
 
   - name: start_server_and_test_integration
     image: node:16
