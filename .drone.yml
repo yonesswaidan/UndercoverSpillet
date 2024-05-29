@@ -39,9 +39,9 @@ steps:
       repo: local/undercovergame
       tags: latest
       username:
-        from_secret: username
+        from_secret: docker_username
       password:
-        from_secret: password
+        from_secret: docker_password
 
   - name: start_server_and_test_integration
     image: node:16
@@ -87,9 +87,9 @@ steps:
       repo: yonesswaidan/undercovergame
       tags: latest
       username:
-        from_secret: username
+        from_secret: docker_username
       password:
-        from_secret: password
+        from_secret: docker_password
 
   - name: deploy_to_hub
     image: plugins/docker
@@ -97,9 +97,9 @@ steps:
       repo: yonesswaidan/undercovergame
       tags: latest
       username:
-        from_secret: username
+        from_secret: docker_username
       password:
-        from_secret: password
+        from_secret: docker_password
 
 services:
   - name: mongodb
