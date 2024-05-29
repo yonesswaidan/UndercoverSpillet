@@ -9,6 +9,6 @@ steps:
       SONARSECRET:
         from_secret: SonarQubeSecret
     commands:
-      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.token="${SONARSECRET}"
+      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="sqp_de51348b7d01f6b0235ad310a9f18d0f759f8819"
       - dotnet build
-      - dotnet sonarscanner end /d:sonar.token="${SONARSECRET}"
+      - dotnet sonarscanner end /d:sonar.token="sqp_de51348b7d01f6b0235ad310a9f18d0f759f8819"
