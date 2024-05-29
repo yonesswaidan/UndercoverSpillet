@@ -42,9 +42,9 @@ app.post('/api/users', async (req, res) => {
   }
 });
 
-// Servér index.html, når roden af webstedet besøges
+// Servér redirect.html, når roden af webstedet besøges
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'spillet', 'index.html'));
+  res.sendFile(path.join(__dirname, 'redirect.html'));
 });
 
 // Start serveren
