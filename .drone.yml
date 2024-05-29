@@ -37,9 +37,9 @@ steps:
   - name: start_server_and_test_integration
     image: node:16
     commands:
-      - node server.js &  # Start server in the background
-      - sleep 5  # Wait 5 seconds to ensure the app starts
-      - npm run test:integration  # Run integration tests
+      - node server.js &  # Start server i baggrunden
+      - sleep 5  # Vent 5 sekunder for at sikre, at appen starter
+      - npm run test:integration  # Kør integrationstest
     environment:
       DRONE_DEBUG: true
     timeout: 15m
@@ -82,8 +82,33 @@ steps:
       password:
         from_secret: docker_password
 
+  - name: install_sonarscanner
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    commands:
+      - dotnet tool install --global dotnet-sonarscanner
+
+  - name: sonar_begin
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    commands:
+      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000"  /d:sonar.token="${SONAR_TOKEN}"
+
+  - name: build_dotnet
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    commands:
+      - dotnet build
+
+  - name: sonar_end
+    image: mcr.microsoft.com/dotnet/core/sdk:3.1
+    commands:
+      - dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
+
 services:
   - name: mongodb
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: game-database
+
+secrets:
+  - name: docker_username
+  - name: docker_password
+  - name: SONAR_TOKEN
