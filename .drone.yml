@@ -82,39 +82,15 @@ steps:
       password:
         from_secret: docker_password
 
-  - name: deploy_to_test
-    image: containrrr/watchtower
-    volumes:
-      - name: docker_socket
-        path: /var/run/docker.sock
-    settings:
-      repo: yonesswaidan/undercovergame:test
-      tags: latest
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-
-  - name: deploy_to_production
-    image: containrrr/watchtower
-    volumes:
-      - name: docker_socket
-        path: /var/run/docker.sock
-    settings:
-      repo: yonesswaidan/undercovergame:latest
-      tags: latest
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-
-volumes:
-  - name: docker_socket
-    host:
-      path: /var/run/docker.sock
-
 services:
   - name: mongodb
     image: mongo
     environment:
       MONGO_INITDB_DATABASE: game-database
+
+  - name: watchtower
+    image: containrrr/watchtower
+    privileged: true
+    environment:
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_NO_PULL: "true"
