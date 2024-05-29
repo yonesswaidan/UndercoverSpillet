@@ -11,9 +11,9 @@ steps:
     commands:
       - dotnet tool install --global dotnet-sonarscanner
       - export PATH="$PATH:/root/.dotnet/tools"
-      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.token="${SONAR_TOKEN}"
+      - dotnet sonarscanner begin /k:"easv-devops_UndercoverSpillet_AY_Gm45-EVvRW2O60GUR" /d:sonar.host.url="http://sonar.setgo.dk:9000" /d:sonar.login="${SONAR_TOKEN}"
       - dotnet build
-      - dotnet sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
+      - dotnet sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
 
   - name: installer_afhængigheder
     image: node:16
@@ -96,7 +96,7 @@ steps:
       PATH: /root/.dotnet/tools:$PATH
     commands:
       - export PATH="$PATH:/root/.dotnet/tools"
-      - dotnet-sonarscanner end /d:sonar.token="${SONAR_TOKEN}"
+      - dotnet-sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
 
   - name: docker_byg
     image: plugins/docker
