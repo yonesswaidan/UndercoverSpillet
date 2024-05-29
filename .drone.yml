@@ -38,7 +38,7 @@ steps:
     image: node:16
     commands:
       - node server.js &  # Start serveren i baggrunden
-      - sleep 10  # Vent 10 sekunder for at sikre, at appen starter
+      - sleep 20  # Vent 10 sekunder for at sikre, at appen starter
       - npm run test:integration  # Kør integrationstesten
     environment:
       DRONE_DEBUG: true
