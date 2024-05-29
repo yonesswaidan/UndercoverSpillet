@@ -84,6 +84,8 @@ steps:
 
   - name: deploy_to_test
     image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     settings:
       repo: yonesswaidan/undercovergame:test
       tags: latest
@@ -91,10 +93,11 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      test: true
 
   - name: deploy_to_production
     image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     settings:
       repo: yonesswaidan/undercovergame:latest
       tags: latest
