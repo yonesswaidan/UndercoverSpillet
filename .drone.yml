@@ -87,14 +87,7 @@ steps:
     commands:
       - dotnet build
 
-  - name: sonar_slut
-    image: mcr.microsoft.com/dotnet/core/sdk:3.1
-    environment:
-      SONAR_TOKEN: ${SONAR_TOKEN}
-      PATH: /root/.dotnet/tools:$PATH
-    commands:
-      - export PATH="$PATH:/root/.dotnet/tools"
-      - dotnet-sonarscanner end /d:sonar.login="${SONAR_TOKEN}"
+
 
   - name: docker_byg
     image: plugins/docker
