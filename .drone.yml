@@ -85,17 +85,6 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: generate_coverage_report
-    image: node:16
-    commands:
-      - npm run coverage
-    environment:
-      DRONE_DEBUG: true
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
 
   - name: deploy_to_staging
     image: plugins/docker
