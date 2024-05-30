@@ -2,7 +2,6 @@ kind: pipeline
 type: docker
 name: default
 
-
   - name: installer_afhængigheder
     image: node:16
     commands:
