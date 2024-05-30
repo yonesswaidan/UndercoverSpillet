@@ -72,11 +72,6 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: byg_dotnet
-    image: mcr.microsoft.com/dotnet/core/sdk:3.1
-    commands:
-      - dotnet build
-
   - name: docker_byg
     image: plugins/docker
     settings:
