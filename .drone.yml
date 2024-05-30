@@ -3,6 +3,14 @@ type: docker
 name: default
 
 steps:
+  - name: sonarqube_scanner
+    image: sonarsource/sonar-scanner-cli:latest
+    commands:
+      - sonar-scanner -Dsonar.projectKey=easv-devops_UndercoverSpillet_AY_G0dy5EVvRW2O60GVK -Dsonar.sources=. -Dsonar.host.url=http://sonar.setgo.dk:9000 -Dsonar.login=$SONAR_TOKEN
+    environment:
+      SONAR_TOKEN:
+        from_secret: sonarqube_token
+
   - name: installer_afhængigheder
     image: node:16
     commands:
@@ -91,3 +99,4 @@ services:
 secrets:
   - name: docker_username
   - name: docker_password
+  - name: sonarqube_token
