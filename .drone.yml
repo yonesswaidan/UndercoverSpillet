@@ -2,6 +2,7 @@ kind: pipeline
 type: docker
 name: default
 
+steps:
   - name: installer_afhængigheder
     image: node:16
     commands:
@@ -95,4 +96,3 @@ services:
 secrets:
   - name: docker_username
   - name: docker_password
-  - name: sonar_token
