@@ -3,6 +3,11 @@ type: docker
 name: default
 
 steps:
+  - name: fix_permissions
+    image: node:16
+    commands:
+      - chown -R 1000:1000 /drone/src
+
   - name: sonarqube_scanner
     image: sonarsource/sonar-scanner-cli:latest
     commands:
