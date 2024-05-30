@@ -112,13 +112,6 @@ steps:
       branch:
         - main
 
-  - name: notify
-    image: plugins/slack
-    settings:
-      webhook:
-        from_secret: slack_webhook
-      channel: devops
-      username: droneci
 
 services:
   - name: mongodb
@@ -130,4 +123,4 @@ secrets:
   - name: docker_username
   - name: docker_password
   - name: sonarqube_token
-  - name: slack_webhook
+
