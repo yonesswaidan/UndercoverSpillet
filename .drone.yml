@@ -11,7 +11,7 @@ steps:
   - name: sonarqube_scanner
     image: sonarsource/sonar-scanner-cli:latest
     commands:
-      - sonar-scanner -Dsonar.projectKey=easv-devops_UndercoverSpillet_AY_G0dy5EVvRW2O60GVK -Dsonar.sources=. -Dsonar.host.url=http://sonar.setgo.dk:9000 -Dsonar.login=$SONAR_TOKEN
+      - sonar-scanner -Dsonar.projectKey=easv-devops_UndercoverSpillet_AY_JUDVyEVvRW2O60GX5 -Dsonar.sources=. -Dsonar.host.url=http://sonar.setgo.dk:9000 -Dsonar.login=$SONAR_TOKEN
     environment:
       SONAR_TOKEN:
         from_secret: sonarqube_token
