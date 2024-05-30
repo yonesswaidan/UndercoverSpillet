@@ -85,6 +85,11 @@ steps:
         memory: 2GiB
         cpu: 2
 
+  - name: fix_mocha_permissions
+    image: node:16
+    commands:
+      - chmod +x node_modules/.bin/mocha
+
   - name: generate_coverage_report
     image: node:16
     commands:
