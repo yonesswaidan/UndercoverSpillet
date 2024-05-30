@@ -85,7 +85,32 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: docker_byg
+  - name: generate_coverage_report
+    image: node:16
+    commands:
+      - npm run coverage
+    environment:
+      DRONE_DEBUG: true
+    timeout: 10m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
+
+  - name: deploy_to_staging
+    image: plugins/docker
+    settings:
+      repo: yonesswaidan/undercovergame-staging
+      tags: staging
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      branch:
+        - staging
+
+  - name: deploy_to_production
     image: plugins/docker
     settings:
       repo: yonesswaidan/undercovergame
@@ -94,6 +119,17 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+    when:
+      branch:
+        - main
+
+  - name: notify
+    image: plugins/slack
+    settings:
+      webhook:
+        from_secret: slack_webhook
+      channel: devops
+      username: droneci
 
 services:
   - name: mongodb
@@ -105,3 +141,4 @@ secrets:
   - name: docker_username
   - name: docker_password
   - name: sonarqube_token
+  - name: slack_webhook
