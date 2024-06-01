@@ -31,8 +31,8 @@ steps:
   - name: lint
     image: node:16
     commands:
-      - npm install eslint --save-dev
-      - chmod +x ./node_modules/.bin/eslint  # Add this line
+      - npm install eslint eslint-plugin-import eslint-plugin-node eslint-config-airbnb-base --save-dev
+      - chmod +x ./node_modules/.bin/eslint
       - npm run lint -- --max-warnings 10 || true
     environment:
       DRONE_DEBUG: true
@@ -122,5 +122,3 @@ secrets:
   - name: docker_username
   - name: docker_password
   - name: sonarqube_token
-
-
