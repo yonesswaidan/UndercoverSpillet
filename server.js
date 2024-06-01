@@ -2,63 +2,40 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const path = require('path');
-const dotenv = require('dotenv');
-
-dotenv.config();
+require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3000;
 
-// Forbindelse til MongoDB Atlas
+// Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB Atlas'))
+  .then(() => console.log('Connected to MongoDB'))
   .catch(error => console.error('Connection error:', error));
 
-const db = mongoose.connection;
-
-// Fejlhåndtering for MongoDB-forbindelse
-db.on('error', console.error.bind(console, 'connection error:'));
-
-// Skema til brugeroplysninger
-const userSchema = new mongoose.Schema({
-  playerName: {
-    type: String,
-    required: true
-  }
-});
-
-const User = mongoose.model('User', userSchema);
-
-// Middleware for at parse JSON-anmodninger
+// Middleware to parse JSON requests
 app.use(bodyParser.json());
 
-// Servér statiske filer fra 'spillet' mappen
+// Serve static files from 'spillet' directory
 app.use(express.static(path.join(__dirname, 'spillet')));
 
-// POST-endpunkt til at gemme brugeroplysninger
+// POST endpoint to save user information
 app.post('/api/users', async (req, res) => {
   try {
     const { playerName } = req.body;
-    if (!playerName) {
-      return res.status(400).json({ message: 'playerName is required' });
-    }
-
     const newUser = new User({ playerName });
     await newUser.save();
-    console.log('POST request received:', playerName);
-    res.status(201).json({ message: 'Bruger oprettet', user: newUser });
+    res.status(201).json({ message: 'User created', user: newUser });
   } catch (error) {
-    console.error('Error during POST /api/users:', error);
-    res.status(500).json({ message: 'Der opstod en fejl', error: error.message });
+    res.status(500).json({ message: 'An error occurred', error: error.message });
   }
 });
 
-// Servér redirect.html, når roden af webstedet besøges
+// Serve redirect.html when the root of the site is visited
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'redirect.html'));
 });
 
-// Start serveren
+// Start the server
 app.listen(port, () => {
-  console.log(`Server kører på http://localhost:${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 });

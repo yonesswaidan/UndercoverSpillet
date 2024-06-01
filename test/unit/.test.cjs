@@ -1,6 +1,6 @@
 const assert = require('assert');
 
-// En simpel enhedstest
+
 console.log('Kører en simpel enhedstest...');
 
 const result1 = true;

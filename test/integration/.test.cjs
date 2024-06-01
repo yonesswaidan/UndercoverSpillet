@@ -1,6 +1,6 @@
 const http = require('http');
 
-const url = 'http://localhost:3001/';
+const url = 'http://localhost:3000/';
 const maxRetries = 5;
 let attempts = 0;
 
@@ -17,7 +17,7 @@ function testServer() {
     if (attempts < maxRetries) {
       attempts++;
       console.log(`Forsøger igen (${attempts}/${maxRetries})...`);
-      setTimeout(testServer, 2000); // Prøv igen efter 2 sekunder
+      setTimeout(testServer, 2000); 
     } else {
       console.error('Der opstod en fejl under integrationstesten:', err.message);
       process.exit(1);  // Fejl
