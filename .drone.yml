@@ -89,7 +89,7 @@ steps:
       password:
         from_secret: docker_password
       context: Spillet
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags: staging
 
@@ -101,7 +101,7 @@ steps:
       password:
         from_secret: docker_password
       context: src
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-frontend
       tags:
         - staging
@@ -123,7 +123,7 @@ steps:
       password:
         from_secret: docker_password
       context: .
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
         - delivery
@@ -136,7 +136,7 @@ steps:
       password:
         from_secret: docker_password
       context: .
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-frontend
       tags:
         - delivery
