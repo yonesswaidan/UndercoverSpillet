@@ -1,10 +1,29 @@
 version: '3.8'
 
 services:
+
+  task-app-frontend:
+    image: yonesswaidan/undercovergame-web:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - task-app-backend
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  task-app-backend:
+    image: yonesswaidan/undercovergame-api:latest
+    ports:
+      - "3001:3000"
+    depends_on:
+      - app
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
   app:
     build: .
     ports:
-      - "3000:3000"
+      - "3002:3000"
     environment:
       - PORT=3000
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
