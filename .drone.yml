@@ -23,10 +23,10 @@ steps:
       - chmod +x test/integration/.test.cjs
 
 
-
   - name: test_unit
     image: node:16
     commands:
+      - npm install  # Sørg for at afhængigheder er installeret før tests køres
       - npm run test:unit
     environment:
       DRONE_DEBUG: true
@@ -76,8 +76,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: Spillet
-      dockerfile: Dockerfile
+      context: .  # Sørg for at konteksten er sat til projektets rodmappe
+      dockerfile: Spillet/Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags: staging
 
@@ -88,13 +88,25 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: src
-      dockerfile: Dockerfile
+      context: .  # Sørg for at konteksten er sat til projektets rodmappe
+      dockerfile: Spillet/Dockerfile
       repo: yonesswaidan/undercovergame-frontend
       tags:
         - staging
 
+  - name: performance tests
+    image: grafana/k6
+    commands:
+      - k6 run test/performance/spike.js
+    depends_on:
+      - update database
 
+  - name: end-to-end tests
+    image: testcafe/testcafe
+    commands:
+      - testcafe chromium:headless test/e2e/count-forecasts.js
+    depends_on:
+      - update database
 
 ---
 
@@ -110,8 +122,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .
-      dockerfile: Dockerfile
+      context: .  # Sørg for at konteksten er sat til projektets rodmappe
+      dockerfile: Spillet/Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
         - delivery
@@ -123,8 +135,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .
-      dockerfile: Dockerfile
+      context: .  # Sørg for at konteksten er sat til projektets rodmappe
+      dockerfile: Spillet/Dockerfile
       repo: yonesswaidan/undercovergame-frontend
       tags:
         - delivery

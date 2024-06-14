@@ -1,20 +1,20 @@
-# Use the official Node.js image
+# Brug det officielle Node.js image
 FROM node:16
 
-# Create and set the working directory
+# Opret og sæt arbejdsbiblioteket
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json files
+# Kopier package.json og package-lock.json filer
 COPY package*.json ./
 
-# Install dependencies
+# Installer afhængigheder
 RUN npm install
 
-# Copy all source files to the working directory
+# Kopier alle kildefiler til arbejdsbiblioteket
 COPY . .
 
-# Expose the application port
+# Eksponér applikationsporten
 EXPOSE 3000
 
-# Start the application
+# Start applikationen
 CMD [ "node", "server.js" ]
