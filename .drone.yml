@@ -1,6 +1,6 @@
 kind: pipeline
 type: docker
-name: default
+name: integration
 
 steps:
   - name: fix_permissions
@@ -8,7 +8,7 @@ steps:
     commands:
       - chown -R 1000:1000 /drone/src
 
-  - name: sonarqube_scanner
+  - name: kode-analyse
     image: sonarsource/sonar-scanner-cli:latest
     commands:
       - sonar-scanner -Dsonar.projectKey=easv-devops_UndercoverSpillet_AY_JUDVyEVvRW2O60GX5 -Dsonar.sources=. -Dsonar.host.url=http://sonar.setgo.dk:9000 -Dsonar.login=$SONAR_TOKEN
@@ -16,33 +16,7 @@ steps:
       SONAR_TOKEN:
         from_secret: sonarqube_token
 
-  - name: install_dependencies
-    image: node:16
-    commands:
-      - npm install
-    environment:
-      DRONE_DEBUG: true
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
-
-  - name: lint
-    image: node:16
-    commands:
-      - npm install eslint eslint-plugin-import eslint-plugin-node eslint-config-airbnb-base --save-dev
-      - chmod +x ./node_modules/.bin/eslint
-      - npm run lint -- --max-warnings 10 || true
-    environment:
-      DRONE_DEBUG: true
-    timeout: 5m
-    resources:
-      limits:
-        memory: 1GiB
-        cpu: 1
-
-  - name: make_tests_executable
+          - name: make_tests_executable
     image: node:16
     commands:
       - chmod +x test/unit/.test.cjs
@@ -74,10 +48,16 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: build
+steps:
+  - name: fix_permissions
     image: node:16
     commands:
-      - npm run build
+      - chown -R 1000:1000 /drone/src
+
+  - name: install_dependencies
+    image: node:16
+    commands:
+      - npm install
     environment:
       DRONE_DEBUG: true
     timeout: 10m
@@ -86,31 +66,101 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: deploy_to_staging
+  - name: lint
+    image: node:16
+    commands:
+      - npm install eslint eslint-plugin-import eslint-plugin-node eslint-config-airbnb-base --save-dev
+      - chmod +x ./node_modules/.bin/eslint
+      - npm run lint -- --max-warnings 10 || true
+    environment:
+      DRONE_DEBUG: true
+    timeout: 5m
+    resources:
+      limits:
+        memory: 1GiB
+        cpu: 1
+
+--- 
+
+kind: pipeline
+type: docker
+name: deliver
+
+steps:
+  - name: publish api
     image: plugins/docker
     settings:
-      repo: yonesswaidan/undercovergame-staging
-      tags: staging
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    when:
-      branch:
+      context: Spillet
+      dockerfile: Spillet/Dockerfile
+      repo: yonesswaidan/undercovergame-api
+      tags: staging
+
+
+  - name: publish web
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      context: src
+      dockerfile: Spillet/Dockerfile
+      repo: yonesswaidan/undercovergame-frontend
+      tags:
         - staging
 
-  - name: deploy_to_production
+        
+  - name: performance tests
+    image: grafana/k6
+    commands:
+      - k6 run test/performance/spike.js
+    depends_on:
+      - update database
+
+  - name: end-to-end tests
+    image: testcafe/testcafe
+    commands:
+      - testcafe chromium:headless test/e2e/count-forecasts.js
+    depends_on:
+      - update database
+
+--- 
+
+kind: pipeline
+type: docker
+name: deploy
+
+steps:
+  - name: release api
     image: plugins/docker
     settings:
-      repo: yonesswaidan/undercovergame
-      tags: latest
+      username:
+        from_secret: docker_username
+
+        from_secret: docker_password
+      context: .
+      dockerfile: Spillet/Dockerfile
+      repo: yonesswaidan/undercovergame-api
+      tags:
+        - delivery
+
+        steps:
+  - name: release web
+    image: plugins/docker
+    settings:
       username:
         from_secret: docker_username
       password:
         from_secret: docker_password
-    when:
-      branch:
-        - main
+      context: .
+      dockerfile: Spillet/Dockerfile
+      repo:  yonesswaidan/undercovergame-frontend
+      tags:
+        - delivery
 
 services:
   - name: mongodb
