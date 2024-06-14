@@ -22,12 +22,10 @@ steps:
       - chmod +x test/unit/.test.cjs
       - chmod +x test/integration/.test.cjs
 
-
-  - name: test_unit
+  - name: install_dependencies
     image: node:16
     commands:
-      - npm install  # Sørg for at afhængigheder er installeret før tests køres
-      - npm run test:unit
+      - npm install
     environment:
       DRONE_DEBUG: true
     timeout: 10m
@@ -36,10 +34,10 @@ steps:
         memory: 2GiB
         cpu: 2
 
-  - name: install_dependencies
+  - name: test_unit
     image: node:16
     commands:
-      - npm install
+      - npm run test:unit
     environment:
       DRONE_DEBUG: true
     timeout: 10m
@@ -69,7 +67,7 @@ type: docker
 name: deliver
 
 steps:
-  - name: publish api
+  - name: publish_api
     image: plugins/docker
     settings:
       username:
@@ -81,7 +79,7 @@ steps:
       repo: yonesswaidan/undercovergame-api
       tags: staging
 
-  - name: publish web
+  - name: publish_web
     image: plugins/docker
     settings:
       username:
@@ -90,10 +88,9 @@ steps:
         from_secret: docker_password
       context: .  # Sørg for at konteksten er sat til projektets rodmappe
       dockerfile: Dockerfile
-      repo: yonesswaidan/undercovergame-frontend
+      repo: yonesswaidan/undercovergame-web
       tags:
         - staging
-
 
 ---
 
@@ -102,7 +99,7 @@ type: docker
 name: deploy
 
 steps:
-  - name: release api
+  - name: release_api
     image: plugins/docker
     settings:
       username:
@@ -115,7 +112,7 @@ steps:
       tags:
         - delivery
 
-  - name: release web
+  - name: release_web
     image: plugins/docker
     settings:
       username:
@@ -124,7 +121,7 @@ steps:
         from_secret: docker_password
       context: .  # Sørg for at konteksten er sat til projektets rodmappe
       dockerfile: Dockerfile
-      repo: yonesswaidan/undercovergame-frontend
+      repo: yonesswaidan/undercovergame-web
       tags:
         - delivery
 
