@@ -77,7 +77,7 @@ steps:
       password:
         from_secret: docker_password
       context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags: staging
 
@@ -89,7 +89,7 @@ steps:
       password:
         from_secret: docker_password
       context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-frontend
       tags:
         - staging
@@ -110,7 +110,7 @@ steps:
       password:
         from_secret: docker_password
       context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
         - delivery
@@ -123,7 +123,7 @@ steps:
       password:
         from_secret: docker_password
       context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Spillet/Dockerfile
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-frontend
       tags:
         - delivery
