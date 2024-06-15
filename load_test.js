@@ -1,5 +1,9 @@
 import http from 'k6/http';
 import { sleep, check } from 'k6';
+import { randomItem } from 'https://jslib.k6.io/k6-utils/1.1.0/index.js'; // Importing utility function for random selection
+
+// Define an array of example player names
+const playerNames = ['John Doe', 'Jane Smith', 'Michael Brown', 'Emily Johnson', 'David Davis'];
 
 export const options = {
     stages: [
@@ -15,7 +19,12 @@ export const options = {
 
 export default function () {
     const url = 'http://localhost:3000/api/users';
-    const payload = JSON.stringify({ playerName: 'John Doe' });
+
+    // Select a random playerName from the array
+    const playerName = randomItem(playerNames);
+
+    // Create the payload object
+    const payload = JSON.stringify({ playerName });
 
     const params = {
         headers: {
@@ -23,8 +32,10 @@ export default function () {
         },
     };
 
+    // Send POST request
     const res = http.post(url, payload, params);
 
+    // Check assertions
     check(res, {
         'is status 201': (r) => r.status === 201,
         'request duration < 200ms': (r) => r.timings.duration < 200,
