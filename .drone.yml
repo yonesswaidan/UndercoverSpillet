@@ -66,26 +66,23 @@ type: docker
 name: deliver
 
 steps:
-  # Start the Node.js server
-  - name: start_server
+  # Start the Node.js server and run load test
+  - name: start_server_og_load_test
     image: node:16
     commands:
       - npm install
-      - node server.js &
+      - node server.js &  # Start serveren i baggrunden
+      - sleep 5  # Vent 5 sekunder for at sikre, at serveren starter
+      - k6 run load_test.js  # Kør load testen
     environment:
       MONGO_URI: mongodb://mongodb/game-database
       PORT: 3000
-    when:
-      event:
-        - push
-
-  # Run the load test
-  - name: load_test
-    image: grafana/k6
-    commands:
-      - k6 run load_test.js
-    depends_on:
-      - start_server
+      DRONE_DEBUG: true
+    timeout: 15m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
 
   - name: publish_api
     image: plugins/docker
