@@ -64,6 +64,7 @@ steps:
   - name: start_server_and_load_test
     image: node:16
     commands:
+      - npm install
       - node server.js 
       - sleep 5 # Wait for 5 seconds to ensure server starts
       - k6 run load_test.js 
