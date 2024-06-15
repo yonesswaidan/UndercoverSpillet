@@ -27,7 +27,8 @@ steps:
       - npm run test:unit
     environment:
       DRONE_DEBUG: "true"
-    timeout: 10m
+    timeout:
+      minutes: 10
     resources:
       limits:
         memory: 2GiB
@@ -41,7 +42,8 @@ steps:
       - npm run lint -- --max-warnings 10 || true
     environment:
       DRONE_DEBUG: "true"
-    timeout: 5m
+    timeout:
+      minutes: 5
     resources:
       limits:
         memory: 1GiB
@@ -66,10 +68,11 @@ steps:
       - sleep 5 # Wait for 5 seconds to ensure server starts
       - k6 run load_test.js 
     environment:
-    MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
+      MONGO_URI: "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database"
       PORT: 3010
       DRONE_DEBUG: true
-    timeout: 20m
+    timeout:
+      minutes: 20
     resources:
       limits:
         memory: 2GiB
