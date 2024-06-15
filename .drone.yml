@@ -71,7 +71,7 @@ steps:
     commands:
       - npm install
       - node server.js &
-      - curl -sSL https://get.k6.io | sh
+      - npm install k6 --global  # Install k6 globally
       - export PATH="/usr/local/bin:$PATH"
       - k6 run load_test.js
 
