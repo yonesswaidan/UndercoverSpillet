@@ -65,39 +65,19 @@ kind: pipeline
 type: docker
 name: deliver
 
-steps:
-  # Wait for MongoDB to be ready
-  - name: wait_for_mongodb
-    image: mvertes/alpine-mongo
-    commands:
-      - >
-        until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
-
-  # Start the Node.js server and run load test
-  - name: start_server_og_load_test
-    image: node:16
-    commands:
-      - npm install
-      - apt-get update && apt-get install -y wget
-      - wget -q -O - https://dl.k6.io/key.gpg | apt-key add -
-      - echo "deb https://dl.k6.io/deb stable main" | tee -a /etc/apt/sources.list
-      - apt-get update && apt-get install -y k6
-      - node server.js > server.log 2>&1 &  # Start serveren i baggrunden og log output
-      - sleep 5  # Vent 5 sekunder for at sikre, at serveren starter
-      - k6 run load_test.js > k6.log 2>&1  # Kør load testen og log output
-      - cat server.log  # Vis serverlog for fejlfinding
-      - cat k6.log  # Vis k6 log for fejlfinding
+services:
+  - name: mongodb
+    image: mongo
     environment:
-      MONGO_URI: mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
-      PORT: 3000
-      DRONE_DEBUG: true
-    timeout: 20m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
-    depends_on:
-      - wait_for_mongodb
+      MONGO_INITDB_DATABASE: game-database
+
+
+          - name: performance tests
+    image: grafana/k6
+    commands:
+      - k6 run load_test.js
+          depends_on:
+      - mongodb
 
   - name: publish_api
     image: plugins/docker
@@ -106,10 +86,10 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Dockerfile
+      dockerfile: Spillet/API/Dockerfile
       repo: yonesswaidan/undercovergame-api
-      tags: staging
+      tags: 
+       - latest
 
   - name: publish_web
     image: plugins/docker
@@ -118,11 +98,11 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Dockerfile
+      context: frontend
+      dockerfile: Spillet/Web/Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
-        - staging
+        - latest
 
 ---
 
@@ -138,11 +118,10 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Dockerfile
+      dockerfile: Spillet/API/Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
-        - delivery
+        - production
 
   - name: release_web
     image: plugins/docker
@@ -151,17 +130,11 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .  # Sørg for at konteksten er sat til projektets rodmappe
-      dockerfile: Dockerfile
+      context: frontend
+      dockerfile: Spillet/API/Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
-        - delivery
-
-services:
-  - name: mongodb
-    image: mongo
-    environment:
-      MONGO_INITDB_DATABASE: game-database
+        - production
 
 secrets:
   - name: docker_username
