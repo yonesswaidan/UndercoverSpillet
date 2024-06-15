@@ -21,17 +21,6 @@ steps:
     commands:
       - chmod +x test/unit/.test.cjs
 
-  - name: install_dependencies
-    image: node:16
-    commands:
-      - npm install
-    environment:
-      DRONE_DEBUG: true
-    timeout: 10m
-    resources:
-      limits:
-        memory: 2GiB
-        cpu: 2
 
   - name: test_unit
     image: node:16

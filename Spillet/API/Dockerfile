@@ -4,9 +4,9 @@ WORKDIR /app
 EXPOSE 3001
 
 # Bygning af applikationen
-COPY ../../package*.json ./
+COPY ./package*.json ./
 RUN npm install
-COPY ../../ ./
+COPY ./ ./
 RUN npm run build
 
 # Produktion
