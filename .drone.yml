@@ -99,8 +99,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-        context: ./Spillet/API
-      dockerfile: ./Spillet/API/Dockerfile
+        context: .
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
         - latest
@@ -112,8 +112,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-        context: ./Spillet/Web
-      dockerfile: ./Spillet/Web/Dockerfile
+        context: .
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
         - latest
@@ -132,8 +132,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: ./Spillet/API
-      dockerfile: ./Spillet/API/Dockerfile
+      context: .
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
         - production
@@ -145,8 +145,8 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-        context: ./Spillet/Web 
-      dockerfile: ./Spillet/Web/Dockerfile
+        context: .
+      dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
         - production
