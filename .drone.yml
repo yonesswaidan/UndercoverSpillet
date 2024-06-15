@@ -87,8 +87,8 @@ steps:
     commands:
       - k6 run load_test.js
     when:
-      event:
-        - push
+    depends_on:
+      - mongodb
 
 steps:
   - name: publish_api
