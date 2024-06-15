@@ -68,7 +68,7 @@ name: deliver
 steps:
   # Wait for MongoDB to be ready
   - name: wait_for_mongodb
-    image: mongo:latest
+    image: mvertes/alpine-mongo
     commands:
       - >
         until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
@@ -82,9 +82,11 @@ steps:
       - wget -q -O - https://dl.k6.io/key.gpg | apt-key add -
       - echo "deb https://dl.k6.io/deb stable main" | tee -a /etc/apt/sources.list
       - apt-get update && apt-get install -y k6
-      - node server.js &  # Start serveren i baggrunden
+      - node server.js > server.log 2>&1 &  # Start serveren i baggrunden og log output
       - sleep 5  # Vent 5 sekunder for at sikre, at serveren starter
-      - k6 run load_test.js  # Kør load testen
+      - k6 run load_test.js > k6.log 2>&1  # Kør load testen og log output
+      - cat server.log  # Vis serverlog for fejlfinding
+      - cat k6.log  # Vis k6 log for fejlfinding
     environment:
       MONGO_URI: mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
       PORT: 3000
