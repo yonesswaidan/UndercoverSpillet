@@ -59,10 +59,22 @@ steps:
     commands:
       - until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
 
-  - name: performance tests
-    image: grafana/k6
+  - name: start_server_and_load_test
+    image: node:16
     commands:
-        - k6 run load_test.js
+      - npm install
+      - node server.js 
+      - sleep 5 # Wait for 5 seconds to ensure server starts
+      - k6 run load_test.js 
+    environment:
+      MONGO_URI: "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database"
+      PORT: 3000
+      DRONE_DEBUG: true
+    timeout: 20m
+    resources:
+      limits:
+        memory: 2GiB
+        cpu: 2
     depends_on:
       - wait_for_mongodb
 
