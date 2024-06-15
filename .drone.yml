@@ -66,6 +66,12 @@ type: docker
 name: deliver
 
 steps:
+  # Wait for MongoDB to be ready
+  - name: wait_for_mongodb
+    image: appropriate/curl
+    commands:
+      - until curl -s http://mongodb:27017/; do echo waiting for mongodb; sleep 2; done
+
   # Start the Node.js server and run load test
   - name: start_server_og_load_test
     image: node:16
@@ -87,6 +93,8 @@ steps:
       limits:
         memory: 2GiB
         cpu: 2
+    depends_on:
+      - wait_for_mongodb
 
   - name: publish_api
     image: plugins/docker
