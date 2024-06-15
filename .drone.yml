@@ -62,7 +62,7 @@ steps:
   - name: performance tests
     image: grafana/k6
     commands:
-        - k6 run TaskManagment/tests/PerformanceTest/load.js
+        - k6 run load_test.js
     depends_on:
       - wait_for_mongodb
 
