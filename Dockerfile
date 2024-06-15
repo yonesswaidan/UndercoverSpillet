@@ -5,7 +5,7 @@ FROM node:16 AS base
 WORKDIR /app
 
 # Copy package.json and package-lock.json from the project root to the working directory
-COPY ./Spillet/Web/package*.json ./
+COPY ./package*.json ./
 
 # Install dependencies
 RUN npm install
