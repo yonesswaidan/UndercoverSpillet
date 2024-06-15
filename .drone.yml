@@ -71,6 +71,10 @@ steps:
     image: node:16
     commands:
       - npm install
+      - apt-get update && apt-get install -y wget
+      - wget -q -O - https://dl.k6.io/key.gpg | apt-key add -
+      - echo "deb https://dl.k6.io/deb stable main" | tee -a /etc/apt/sources.list
+      - apt-get update && apt-get install -y k6
       - node server.js &  # Start serveren i baggrunden
       - sleep 5  # Vent 5 sekunder for at sikre, at serveren starter
       - k6 run load_test.js  # Kør load testen
@@ -78,7 +82,7 @@ steps:
       MONGO_URI: mongodb://mongodb/game-database
       PORT: 3000
       DRONE_DEBUG: true
-    timeout: 15m
+    timeout: 20m
     resources:
       limits:
         memory: 2GiB
