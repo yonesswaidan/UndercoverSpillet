@@ -149,7 +149,7 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .  # Sørg for at konteksten er sat til projektets rodmappe
+      context: .  # Sørg for at konteksten er sat til projektets rodmapp
       dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
