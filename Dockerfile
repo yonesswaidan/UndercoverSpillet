@@ -1,35 +1,20 @@
-# Use the official Node.js image as base
-FROM node:16 AS base
+# Vælg en passende Node.js-baseret base image
+FROM node:16
 
-# Set working directory
+# Opret arbejdsområdet i Docker-containeren
 WORKDIR /app
 
-# Copy package.json and package-lock.json from the project root to the working directory
-COPY ./package*.json ./
+# Kopier package.json og package-lock.json
+COPY package*.json ./
 
-# Install dependencies
+# Installer npm-afhængigheder
 RUN npm install
 
-# Copy the rest of the application code
-COPY ./ ./
+# Kopier resten af appkoden
+COPY . .
 
-# Build the application
+# Byg appen (hvis nødvendigt)
 RUN npm run build
 
-# Production stage
-FROM node:16-alpine AS production
-
-# Set working directory
-WORKDIR /app
-
-# Copy built application from the base stage
-COPY --from=base /app ./
-
-# Install only production dependencies
-RUN npm ci --only=production
-
-# Expose the application port
-EXPOSE 3000
-
-# Start the application
+# Angiv standardkommandoen, når containeren starter
 CMD ["node", "server.js"]
