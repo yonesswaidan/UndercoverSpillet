@@ -68,9 +68,10 @@ name: deliver
 steps:
   # Wait for MongoDB to be ready
   - name: wait_for_mongodb
-    image: appropriate/curl
+    image: mongo:latest
     commands:
-      - until curl -s mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database; do echo waiting for mongodb; sleep 2; done
+      - >
+        until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
 
   # Start the Node.js server and run load test
   - name: start_server_og_load_test
