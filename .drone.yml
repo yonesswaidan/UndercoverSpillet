@@ -68,7 +68,7 @@ name: deliver
 steps:
   # Wait for MongoDB to be ready
   - name: wait_for_mongodb
-    image: mongo:latest
+    image: mvertes/alpine-mongo
     commands:
       - >
         until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
