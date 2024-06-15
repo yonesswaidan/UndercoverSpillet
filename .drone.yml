@@ -66,14 +66,14 @@ steps:
       - >
         until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
 
-  - name: start_api_server
+  - name: start_api_server_and_k6
     image: node:16
     commands:
       - npm install
-      - node server.js &  
+      - node server.js &
       - curl -sSL https://get.k6.io | sh
+      - export PATH="/usr/local/bin:$PATH"
       - k6 run load_test.js
-
 
   - name: publish_api
     image: plugins/docker
