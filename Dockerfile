@@ -1,31 +1,20 @@
+# Vælg en passende Node.js-baseret base image
 FROM node:16
 
-# Install k6
-RUN apt-get update && apt-get install -y \
-    ca-certificates \
-    && apt-get clean \
-    && apt-get autoclean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN apt-get update && apt-get install -y wget && \
-    export K6_VERSION="0.35.0" && \
-    wget https://github.com/loadimpact/k6/releases/download/v$K6_VERSION/k6-v$K6_VERSION-linux-amd64.tar.gz && \
-    tar -zxvf k6-v$K6_VERSION-linux-amd64.tar.gz && \
-    mv k6-v$K6_VERSION-linux-amd64/k6 /usr/local/bin/k6 && \
-    chmod +x /usr/local/bin/k6 && \
-    rm -rf k6-v$K6_VERSION-linux-amd64.tar.gz k6-v$K6_VERSION-linux-amd64
-
-# Set the working directory
+# Opret arbejdsområdet i Docker-containeren
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Kopier package.json og package-lock.json
 COPY package*.json ./
 
-# Install dependencies
+# Installer npm-afhængigheder
 RUN npm install
 
-# Copy the rest of the application code
+# Kopier resten af appkoden
 COPY . .
 
-# Command to start the application
+# Byg appen (hvis nødvendigt)
+RUN npm run build
+
+# Angiv standardkommandoen, når containeren starter
 CMD ["node", "server.js"]
