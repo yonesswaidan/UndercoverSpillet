@@ -70,15 +70,10 @@ steps:
     image: node:16
     commands:
       - npm install
-      - node server.js &  # Start din API-server i baggrunden
-
-  - name: test
-    image: loadimpact/k6:latest
-    commands:
-      - curl -sSL https://get.k6.io | sh
+      - node server.js &  
+     - curl -sSL https://get.k6.io | sh
       - k6 run load_test.js
-    depends_on:
-      - wait_for_mongodb
+
 
   - name: publish_api
     image: plugins/docker
