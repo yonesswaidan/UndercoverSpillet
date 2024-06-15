@@ -27,8 +27,7 @@ steps:
       - npm run test:unit
     environment:
       DRONE_DEBUG: "true"
-    timeout:
-      minutes: 10
+    timeout: 10m
     resources:
       limits:
         memory: 2GiB
@@ -42,8 +41,7 @@ steps:
       - npm run lint -- --max-warnings 10 || true
     environment:
       DRONE_DEBUG: "true"
-    timeout:
-      minutes: 5
+    timeout: 5m
     resources:
       limits:
         memory: 1GiB
@@ -58,25 +56,25 @@ name: deliver
 steps:
   - name: wait_for_mongodb
     image: mvertes/alpine-mongo
-    environment:
-      MONGO_URI: mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
     commands:
-      - mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
-
+      - until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
 
   - name: start_server_and_load_test
     image: node:16
     commands:
       - npm install
-      - node server.js 
+      - apt-get update && apt-get install -y wget
+      - wget -q -O - https://dl.k6.io/key.gpg | apt-key add -
+      - echo "deb https://dl.k6.io/deb stable main" | tee /etc/apt/sources.list.d/k6.list
+      - apt-get update && apt-get install -y k6
+      - node server.js > server.log 2>&1 & # Start server in background and log output
       - sleep 5 # Wait for 5 seconds to ensure server starts
       - k6 run load_test.js 
     environment:
       MONGO_URI: "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database"
-      PORT: 3010
+      PORT: 3000
       DRONE_DEBUG: true
-    timeout:
-      minutes: 20
+    timeout: 20m
     resources:
       limits:
         memory: 2GiB
