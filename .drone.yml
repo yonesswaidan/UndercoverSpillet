@@ -58,8 +58,11 @@ name: deliver
 steps:
   - name: wait_for_mongodb
     image: mvertes/alpine-mongo
+    environment:
+      MONGO_URI: mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
     commands:
-      - until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
+      - mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
+
 
   - name: start_server_and_load_test
     image: node:16
