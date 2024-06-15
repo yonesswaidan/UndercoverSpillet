@@ -44,7 +44,7 @@ export default function () {
     });
 
     // Track request duration
-    if (duration >= 200) {
+    if (duration >= 201) {
         console.log(`Request took ${duration}ms`);
     }
 
