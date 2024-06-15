@@ -66,7 +66,6 @@ steps:
       - npm install
       - node server.js &
       - npm install k6 --global  # Install k6 globally
-      - export PATH="/usr/local/bin:$PATH"
       - k6 run load_test.js
 
   - name: publish_api
