@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 app.use(bodyParser.json());
 
 // Serve static files from 'spillet' directory
-app.use(express.static(path.join(__dirname, 'spillet')));
+app.use(express.static(path.join(__dirname, 'Spillet')));
 
 // POST endpoint to save user information
 app.post('/api/users', async (req, res) => {

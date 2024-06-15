@@ -20,7 +20,7 @@ steps:
     image: node:16
     commands:
       - chmod +x test/unit/.test.cjs
-      - chmod +x test/integration/.test.cjs
+
 
   - name: install_dependencies
     image: node:16
@@ -65,6 +65,30 @@ steps:
 kind: pipeline
 type: docker
 name: deliver
+
+
+steps:
+  # Start the Node.js server
+  - name: start_server
+    image: node:16
+    commands:
+      - npm install
+      - node server.js &
+    environment:
+      MONGO_URI: mongodb://mongodb/game-database
+      PORT: 3000
+    when:
+      event:
+        - push
+
+  # Run the load test
+  - name: load_test
+    image: grafana/k6
+    commands:
+      - k6 run load_test.js
+    when:
+      event:
+        - push
 
 steps:
   - name: publish_api
