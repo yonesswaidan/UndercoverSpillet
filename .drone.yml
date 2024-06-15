@@ -68,7 +68,7 @@ name: deliver
 steps:
   # Wait for MongoDB to be ready
   - name: wait_for_mongodb
-    image: mvertes/alpine-mongo
+    image: mongo:latest
     commands:
       - >
         until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
@@ -149,7 +149,7 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .  # Sørg for at konteksten er sat til projektets rodmapp
+      context: .  # Sørg for at konteksten er sat til projektets rodmappe
       dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
