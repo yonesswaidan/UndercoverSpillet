@@ -71,7 +71,7 @@ steps:
     image: loadimpact/k6:latest
     commands:
       - curl -sSL https://get.k6.io | sh
-      - k6 run load-test.js
+      - k6 run load_test.js
     depends_on:
       - wait_for_mongodb
 
