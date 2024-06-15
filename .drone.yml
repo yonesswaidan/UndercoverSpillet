@@ -21,13 +21,12 @@ steps:
     commands:
       - chmod +x test/unit/.test.cjs
 
-
   - name: test_unit
     image: node:16
     commands:
       - npm run test:unit
     environment:
-      DRONE_DEBUG: true
+      DRONE_DEBUG: "true"
     timeout: 10m
     resources:
       limits:
@@ -41,7 +40,7 @@ steps:
       - chmod +x ./node_modules/.bin/eslint
       - npm run lint -- --max-warnings 10 || true
     environment:
-      DRONE_DEBUG: true
+      DRONE_DEBUG: "true"
     timeout: 5m
     resources:
       limits:
@@ -67,8 +66,6 @@ steps:
       - >
         until mongo "mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database" --eval "print('waited for connection')" || sleep 2; do :; done
 
-  
-  steps:
   - name: start_api_server
     image: node:16
     commands:
@@ -90,7 +87,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-        context: .
       dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
@@ -103,7 +99,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-        context: .
       dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
@@ -123,7 +118,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-      context: .
       dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-api
       tags:
@@ -136,7 +130,6 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
-        context: .
       dockerfile: Dockerfile
       repo: yonesswaidan/undercovergame-web
       tags:
