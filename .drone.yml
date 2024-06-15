@@ -71,7 +71,7 @@ steps:
     commands:
       - npm install
       - node server.js &  
-     - curl -sSL https://get.k6.io | sh
+      - curl -sSL https://get.k6.io | sh
       - k6 run load_test.js
 
 
