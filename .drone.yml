@@ -4,6 +4,11 @@ type: docker
 name: integration
 
 steps:
+  - name: fix_permissions
+    image: node:16
+    commands:
+      - chown -R 1000:1000 /drone/src
+
   - name: kode-analyse
     image: sonarsource/sonar-scanner-cli
     commands:
@@ -11,13 +16,15 @@ steps:
     environment:
       SONAR_TOKEN:
         from_secret: sonarqube_token
+    depends_on:
+      - fix_permissions
 
   - name: gør_tests_eksekverbare
     image: node:16
     commands:
       - chmod +x test/unit/.test.cjs
       - chmod +x test/integration/.test.cjs
-    depends_on: 
+    depends_on:
       - kode-analyse
 
   - name: test_unit
@@ -31,7 +38,7 @@ steps:
       limits:
         memory: 2GiB
         cpu: 2
-    depends_on: 
+    depends_on:
       - gør_tests_eksekverbare
 
   - name: start_server_og_test_integration
@@ -47,7 +54,7 @@ steps:
       limits:
         memory: 2GiB
         cpu: 2
-    depends_on: 
+    depends_on:
       - test_unit
 
   - name: lint
@@ -63,14 +70,14 @@ steps:
       limits:
         memory: 1GiB
         cpu: 1
-    depends_on: 
+    depends_on:
       - start_server_og_test_integration
 
 ---
 kind: pipeline
 type: docker
 name: deliver
-depends_on: 
+depends_on:
   - integration
 
 steps:
@@ -104,14 +111,14 @@ steps:
       - k6 run test/performance/load_test.js
       - k6 run test/performance/spike_test.js
       - k6 run test/performance/stress_test.js
-    depends_on: 
+    depends_on:
       - publish_web
 
 ---
 kind: pipeline
 type: docker
 name: deploy
-depends_on: 
+depends_on:
   - deliver
 
 steps:
