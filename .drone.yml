@@ -54,17 +54,12 @@ type: docker
 name: deliver
 
 
-steps:
-  - name: start_server
-    image: node:16
-    commands:
-      - node server.js &
-      
+
 steps:
   - name: performance tests
     image: grafana/k6
     commands:
-      - k6 run --address 192.168.87.167:3000 load_test.js  # Tilføj '--address' flag for at angive IP-adressen
+      - node server.js & k6 run --address 192.168.87.167:3000 load_test.js  # Tilføj '--address' flag for at angive IP-adressen
 
 
   - name: publish_api
