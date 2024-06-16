@@ -57,7 +57,7 @@ steps:
   - name: performance tests
     image: grafana/k6
     commands:
-      - k6 run --address 192.168.87.167:3000 load_test.js  # Tilføj '--address' flag for at angive IP-adressen
+      - k6 run --address 192.168.87.167:3000/api/users load_test.js  # Tilføj '--address' flag for at angive IP-adressen
 
 
   - name: publish_api
