@@ -8,12 +8,12 @@ export let options = {
         { duration: '30s', target: 0 }, 
     ],
     thresholds: {
-        http_req_duration: ['p(99)<15000'], // 99% of requests must complete below 15s
+        http_req_duration: ['p(99)<15000'], 
     },
 };
 
 export default function () {
-    let res = http.get('http://192.168.87.167:3000');
+    let res = http.get('http://localhost:3000');
     check(res, { 'status was 200': (r) => r.status == 200 });
     sleep(1);
 }

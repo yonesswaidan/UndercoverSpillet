@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "192.168.87.167:3000:3000"
+      - "3000:3000"
     environment:
       - PORT=3000
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
@@ -18,7 +18,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "192.168.87.167:3001:3000"
+      - "3001:3000"
     environment:
       - PORT=3001
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
@@ -28,7 +28,7 @@ services:
   app:
     build: .
     ports:
-      - "192.168.87.167:3002:3000"
+      - "3002:3000"
     environment:
       - PORT=3002
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
@@ -40,7 +40,7 @@ services:
   mongodb:
     image: mongo:latest
     ports:
-      - "192.168.87.167:27017:27017"
+      - "27017:27017"
     volumes:
       - mongo-data:/data/db
     labels:
@@ -54,16 +54,6 @@ services:
       - WATCHTOWER_CLEANUP=true
       - WATCHTOWER_LABEL_ENABLE=true
       - WATCHTOWER_POLL_INTERVAL=30
-
-  k6:
-    image: grafana/k6
-    command: run /scripts/load_test.js
-    volumes:
-      - ./load_test.js:/scripts/load_test.js
-    depends_on:
-      - task-app-frontend
-    networks:
-      - default
 
 volumes:
   mongo-data:
