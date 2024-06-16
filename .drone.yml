@@ -87,19 +87,6 @@ name: deliver
 depends_on:
   - integration
 
-steps:
-  - name: publish_api
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      dockerfile: Dockerfile
-      repo: yonesswaidan/undercovergame-api
-      tags:
-        - latest
-
   - name: publish_web
     image: plugins/docker
     settings:
@@ -127,19 +114,6 @@ type: docker
 name: deploy
 depends_on:
   - deliver
-
-steps:
-  - name: release_api
-    image: plugins/docker
-    settings:
-      username:
-        from_secret: docker_username
-      password:
-        from_secret: docker_password
-      dockerfile: Dockerfile
-      repo: yonesswaidan/undercovergame-api
-      tags:
-        - production
 
   - name: release_web
     image: plugins/docker

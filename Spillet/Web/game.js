@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        playerNameInputsContainer.innerHTML = ''; // Nulstil spillernavn-inputfelter
+        playerNameInputsContainer.innerHTML = ''; // Reset player name input fields
 
         for (let i = 1; i <= numPlayers; i++) {
             const playerNameInput = document.createElement('input');
@@ -37,6 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         playerNameInputsContainer.appendChild(startGameBtn);
-        playerNameInputsContainer.style.display = 'block'; // Vis spillernavn-inputfelter
+        playerNameInputsContainer.style.display = 'block'; // Show player name input fields
     });
 });

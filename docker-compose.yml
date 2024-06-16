@@ -13,17 +13,6 @@ services:
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
-  task-app-backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "3001:3000"
-    environment:
-      - PORT=3001
-      - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   app:
     build: .
