@@ -55,5 +55,15 @@ services:
       - WATCHTOWER_LABEL_ENABLE=true
       - WATCHTOWER_POLL_INTERVAL=30
 
+  k6:
+    image: grafana/k6
+    command: run /scripts/load_test.js
+    volumes:
+      - ./load_test.js:/scripts/load_test.js
+    depends_on:
+      - task-app-frontend
+    networks:
+      - default
+
 volumes:
   mongo-data:
