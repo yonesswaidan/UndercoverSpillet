@@ -1,15 +1,12 @@
 version: '3.8'
 
 services:
-
   task-app-frontend:
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    depends_on:
-      - task-app-backend
+      - "192.168.87.167:3000:3000"
     environment:
       - PORT=3000
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
@@ -21,9 +18,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "3001:3000"
-    depends_on:
-      - app
+      - "192.168.87.167:3001:3000"
     environment:
       - PORT=3001
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
@@ -33,19 +28,19 @@ services:
   app:
     build: .
     ports:
-      - "3002:3000"
+      - "192.168.87.167:3002:3000"
     environment:
-      - PORT=3000
+      - PORT=3002
       - MONGO_URI=mongodb+srv://yonesswaidan:sgg59mcd@game-database.x2asuuz.mongodb.net/game-database
     volumes:
       - .:/usr/src/app
-    depends_on:
-      - mongodb
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
 
   mongodb:
     image: mongo:latest
+    ports:
+      - "192.168.87.167:27017:27017"
     volumes:
       - mongo-data:/data/db
     labels:

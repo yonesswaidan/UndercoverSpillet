@@ -54,7 +54,7 @@ type: docker
 name: deliver
 
 steps:
-  - name: performance tests
+  - name: performance_tests
     image: grafana/k6
     commands:
       - k6 run load_test.js

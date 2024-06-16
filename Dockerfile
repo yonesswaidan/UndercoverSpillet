@@ -1,20 +1,24 @@
-# Vælg en passende Node.js-baseret base image
+# Use an official Node.js runtime as a parent image
 FROM node:16
 
-# Opret arbejdsområdet i Docker-containeren
+# Set the working directory in the container
 WORKDIR /app
 
-# Kopier package.json og package-lock.json
+# Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Installer npm-afhængigheder
+# Install dependencies
 RUN npm install
 
-# Kopier resten af appkoden
+# Copy the rest of the application code to the working directory
 COPY . .
 
-# Byg appen (hvis nødvendigt)
-RUN npm run build
+# If your application has a build step (e.g., for a front-end part)
+# Uncomment the next line if needed
+# RUN npm run build
 
-# Angiv standardkommandoen, når containeren starter
+# Make port 3000 available to the world outside this container
+EXPOSE 3000
+
+# Define the command to run the application
 CMD ["node", "server.js"]

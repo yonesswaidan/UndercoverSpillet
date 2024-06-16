@@ -7,8 +7,8 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-// Import User model
-const User = require('./models/User');
+// Set Mongoose strictQuery option
+mongoose.set('strictQuery', false);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -18,20 +18,8 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 
-// Serve static files from 'spillet' directory
+// Serve static files from 'Spillet' directory
 app.use(express.static(path.join(__dirname, 'Spillet')));
-
-// POST endpoint to save user information
-app.post('/api/users', async (req, res) => {
-  try {
-    const { playerName } = req.body;
-    const newUser = new User({ playerName });
-    await newUser.save();
-    res.status(201).json({ message: 'User created', user: newUser });
-  } catch (error) {
-    res.status(500).json({ message: 'An error occurred', error: error.message });
-  }
-});
 
 // Serve redirect.html when the root of the site is visited
 app.get('/', (req, res) => {
@@ -39,6 +27,6 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server running at http://localhost:${port}`);
 });
