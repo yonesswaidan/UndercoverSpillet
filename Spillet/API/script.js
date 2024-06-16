@@ -4,14 +4,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const aboutBtn = document.getElementById('aboutBtn');
 
     startGameBtn.addEventListener('click', function() {
-        window.location.href = 'game.html';
+        window.location.href = 'Web/game.html';
     });
 
     instructionsBtn.addEventListener('click', function() {
-        window.location.href = 'instructions.html';
+        window.location.href = 'Web/instructions.html';
     });
 
     aboutBtn.addEventListener('click', function() {
-        window.location.href = 'about.html';
+        window.location.href = 'Web/about.html';
     });
 });
