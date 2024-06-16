@@ -6,7 +6,6 @@ require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const ipAddress = '192.168.87.167'; // Indsæt din ønskede IP-adresse her
 
 // Import User model
 const User = require('./models/User');
@@ -40,6 +39,6 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-app.listen(port, ipAddress, () => {
-  console.log(`Server running at http://${ipAddress}:${port}`);
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
 });
