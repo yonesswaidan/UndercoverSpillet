@@ -9,6 +9,11 @@ steps:
     commands:
       - chown -R 1000:1000 /drone/src
 
+  - name: install_dependencies
+    image: node:16
+    commands:
+      - npm install
+
   - name: kode-analyse
     image: sonarsource/sonar-scanner-cli
     commands:
@@ -18,6 +23,7 @@ steps:
         from_secret: sonarqube_token
     depends_on:
       - fix_permissions
+      - install_dependencies
 
   - name: gør_tests_eksekverbare
     image: node:16
@@ -44,6 +50,7 @@ steps:
   - name: start_server_og_test_integration
     image: node:16
     commands:
+      - npm install # Ensure dependencies are installed
       - node server.js &  # Start serveren i baggrunden
       - sleep 5  # Vent 5 sekunder for at sikre, at appen starter
       - npm run test:integration  # Kør integrationstest
