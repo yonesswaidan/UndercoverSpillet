@@ -1,4 +1,3 @@
----
 kind: pipeline
 type: docker
 name: integration
@@ -81,12 +80,14 @@ steps:
       - start_server_og_test_integration
 
 ---
+
 kind: pipeline
 type: docker
 name: deliver
 depends_on:
   - integration
 
+steps:
   - name: publish_web
     image: plugins/docker
     settings:
@@ -109,12 +110,14 @@ depends_on:
       - publish_web
 
 ---
+
 kind: pipeline
 type: docker
 name: deploy
 depends_on:
   - deliver
 
+steps:
   - name: release_web
     image: plugins/docker
     settings:
