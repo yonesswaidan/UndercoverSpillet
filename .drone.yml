@@ -59,6 +59,8 @@ steps:
   - name: performance tests
     image: grafana/k6
     commands:
+      - npm install  # Hvis nødvendigt, afhængigt af dit projekt
+      - npm run build  # Hvis nødvendigt, afhængigt af dit projekt
       - node server.js & k6 run --address 192.168.87.167:3000 load_test.js  # Tilføj '--address' flag for at angive IP-adressen
 
 
