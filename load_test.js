@@ -1,17 +1,26 @@
 import http from 'k6/http';
-
-export let options = {
-    stages: [
-        { duration: '30s', target: 100 }, 
-        { duration: '50s', target: 100 }, 
-        { duration: '30s', target: 0 }, 
-    ],
-    thresholds: {
-        http_req_duration: ['p(99)<15000'], // 99% of requests must complete below 15s
-    },
-};
+import { sleep } from 'k6';
 
 export default function () {
-    http.get('http://192.168.87.167:3000/api/Users');
-}
+    // Adjust timeout if needed
+    let url = 'http://192.168.87.167:3000/api/users';
+    let payload = JSON.stringify({ playerName: 'TestUser' });
+    let params = {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    };
 
+    // Send a POST request to create a user
+    let response = http.post(url, payload, params);
+
+    // Example check
+    if (response.status !== 201) {
+        console.error(`Request failed for ${url}: ${response.status} ${response.body}`);
+    } else {
+        console.log(`User created successfully: ${response.json().user.playerName}`);
+    }
+
+    // Add a sleep to simulate user pacing
+    sleep(1);
+}
