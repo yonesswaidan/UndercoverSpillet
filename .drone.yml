@@ -58,6 +58,8 @@ steps:
     image: grafana/k6
     commands:
       - k6 run load_test.js
+      - k6 run spike_test.js
+      - k6 run stress_test.js
 
   - name: publish_api
     image: plugins/docker
