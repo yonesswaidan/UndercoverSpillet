@@ -1,3 +1,4 @@
+---
 kind: pipeline
 type: docker
 name: integration
@@ -9,7 +10,7 @@ steps:
       - chown -R 1000:1000 /drone/src
 
   - name: kode-analyse
-    image: sonarsource/sonar-scanner-cli:latest
+    image: sonarsource/sonar-scanner-cli
     commands:
       - sonar-scanner -Dsonar.projectKey=easv-devops_UndercoverSpillet_AY_JUDVyEVvRW2O60GX5 -Dsonar.sources=. -Dsonar.host.url=http://sonar.setgo.dk:9000 -Dsonar.login=$SONAR_TOKEN
     environment:
@@ -48,12 +49,12 @@ steps:
         cpu: 1
 
 ---
-
 kind: pipeline
 type: docker
 name: deliver
 
- - name: performance tests
+steps:
+  - name: performance tests
     image: grafana/k6
     commands:
       - k6 run load_test.js
@@ -83,7 +84,6 @@ name: deliver
         - latest
 
 ---
-
 kind: pipeline
 type: docker
 name: deploy
