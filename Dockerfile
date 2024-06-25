@@ -13,9 +13,6 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
-# If your application has a build step (e.g., for a front-end part)
-# Uncomment the next line if needed
-# RUN npm run build
 
 # Make port 3000 available to the world outside this container
 EXPOSE 3000
